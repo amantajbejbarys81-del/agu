@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мой сайт</title>
+  <style>
+    body { font-family: sans-serif; padding: 24px; transition: background 0.3s; }
+  </style>
+</head>
+<body>
+  <h1 id="title">Загрузка...</h1>
+  <p id="text"></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const app = initializeApp({
+      databaseURL: "ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_FIREBASE"
+    });
+    const db = getDatabase(app);
+
+    onValue(ref(db, "siteContent"), (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        document.getElementById("title").textContent = data.title || "Без заголовка";
+        document.getElementById("text").textContent = data.text || "";
+        document.body.style.backgroundColor = data.bgColor || "#ffffff";
+      }
+    });
+  </script>
+</body>
+</html>
