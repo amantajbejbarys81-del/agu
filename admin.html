@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Админка</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 40px auto; display: flex; flex-direction: column; gap: 12px; }
+    input, textarea, button { padding: 10px; font-size: 16px; }
+    button { background: #111; color: #fff; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Редактор сайта</h2>
+  <input id="titleInput" placeholder="Новый заголовок">
+  <textarea id="textInput" rows="4" placeholder="Новый текст"></textarea>
+  <input id="colorInput" type="color" value="#ffffff">
+  <button id="saveBtn">Сохранить на сайте</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const app = initializeApp({
+      databaseURL: "ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_FIREBASE"
+    });
+    const db = getDatabase(app);
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      set(ref(db, "siteContent"), {
+        title: document.getElementById("titleInput").value,
+        text: document.getElementById("textInput").value,
+        bgColor: document.getElementById("colorInput").value
+      });
+      alert("Обновлено!");
+    });
+  </script>
+</body>
+</html>
